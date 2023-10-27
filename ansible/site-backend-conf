@@ -1,0 +1,9 @@
+server {
+        listen 80;
+        listen [::]:80;
+        root /var/www/html-new/index.html; #this example path for static file index.html
+        server_name _;
+        location / {
+                try_files $uri $uri/ =404;
+        }
+}

@@ -1,0 +1,2 @@
+kubectl cordon k8s-node-1
+kubectl drain k8s-node-1 --delete-empty-dir --ignore-daemonsets --force

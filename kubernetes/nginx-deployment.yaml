@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-app
+  labels:
+    app: nginx-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-app
+  template:
+    metadata:
+      labels:
+        app: nginx-app
+    spec:
+      volumes:
+        - name: app-data
+          persistentVolumeClaim:
+            claimName: app-data
+      containers:
+        - name: nginx
+          image: nginx:1.11.10-alpine
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: app-data
+              mountPath: /srv/app-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-app-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: nginx-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

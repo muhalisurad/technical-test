@@ -1,0 +1,24 @@
+---
+- hosts: loadbalancer
+  tasks:
+    - name: Remove default nginx configuration
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+
+    - name: copy the nginx config file
+      copy:
+        src: site-loadbalancer-conf
+        dest: /etc/nginx/sites-available/site-loadbalancer-conf
+        
+    - name: Enable website configuration
+      file:
+        src: /etc/nginx/sites-available/site-loadbalancer-conf
+        dest: /etc/nginx/sites-enabled/site-loadbalancer-conf
+        state: link
+    
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+

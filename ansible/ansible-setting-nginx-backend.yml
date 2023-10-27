@@ -1,0 +1,37 @@
+---
+- hosts: backend
+  tasks:
+    - name: create new folder to root document nginx
+      file:
+        path: /var/www/html-new
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: copy index.html
+      copy:
+        src: index.html
+        dest: /var/www/html-new/index.html
+
+    - name: Remove default nginx configuration
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+
+    - name: copy the nginx config file
+      copy:
+        src: site-backend-conf
+        dest: /etc/nginx/sites-available/site-backend-conf
+        
+    - name: Enable website configuration
+      file:
+        src: /etc/nginx/sites-available/site-backend-conf
+        dest: /etc/nginx/sites-enabled/site-backend-conf
+        state: link
+    
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+

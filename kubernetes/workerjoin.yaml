@@ -1,0 +1,4 @@
+- ssh to master-node
+- kubeadm token create --print-join-command
+- ssh to worker node
+- kubeadm join master-node<ip master node/domain master node>:6443 --token 2zqm9s.qh5kv4z1si084rvv --discovery-token-ca-cert-hash sha256:ef1e53715f78df8e3354b4507d9552bbca923b6cad294331387dfcb60cc43c3a
